@@ -3,8 +3,13 @@ import examRouter from "./controllers/Exam/examRouting.js"
 import teacherRouter from "./controllers/Teacher/teacherRouting.js"
 import studentRouter from "./controllers/Student/studentRouting.js"
 import { globalError } from "./utilis/ErrorHandling.js"
+import cors from "cors"
 
 export const initApp = function (app, express) {
+    app.use(cors({
+        origin: ['http://localhost:4200',"*"],
+        credentials: true,
+    }));      
     app.use(express.json())
     app.use("/api/v1/auth", authRouter)
     app.use("/api/v1/exam", examRouter)
