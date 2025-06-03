@@ -1,11 +1,11 @@
 import express from "express"
 import * as studentController from "./studentController.js"
 import { asyncHandler } from "../../utilis/ErrorHandling.js"
+import { authMiddleware, roles } from "../../middleWare/authMiddleware.js"
 const router = express.Router()
 
-router.post("/", asyncHandler(studentController.getstudentExams))
-router.get("/exam/:id", asyncHandler(studentController.getstudentExam))
-// router.put("/:id/edit", asyncHandler(studentController.editstudent))
+router.post("/", authMiddleware([roles.STUDENT]), asyncHandler(studentController.studentSubmitExam))
+// router.get("/exam/:id", asyncHandler(studentController.getstudentExam))
 
 
 

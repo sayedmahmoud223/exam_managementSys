@@ -4898,45 +4898,75 @@ export namespace Prisma {
 
   export type AggregateExam = {
     _count: ExamCountAggregateOutputType | null
+    _avg: ExamAvgAggregateOutputType | null
+    _sum: ExamSumAggregateOutputType | null
     _min: ExamMinAggregateOutputType | null
     _max: ExamMaxAggregateOutputType | null
+  }
+
+  export type ExamAvgAggregateOutputType = {
+    grade: number | null
+  }
+
+  export type ExamSumAggregateOutputType = {
+    grade: number | null
   }
 
   export type ExamMinAggregateOutputType = {
     id: string | null
     name: string | null
+    duration: string | null
+    grade: number | null
     teacherId: string | null
   }
 
   export type ExamMaxAggregateOutputType = {
     id: string | null
     name: string | null
+    duration: string | null
+    grade: number | null
     teacherId: string | null
   }
 
   export type ExamCountAggregateOutputType = {
     id: number
     name: number
+    duration: number
+    grade: number
     teacherId: number
     _all: number
   }
 
 
+  export type ExamAvgAggregateInputType = {
+    grade?: true
+  }
+
+  export type ExamSumAggregateInputType = {
+    grade?: true
+  }
+
   export type ExamMinAggregateInputType = {
     id?: true
     name?: true
+    duration?: true
+    grade?: true
     teacherId?: true
   }
 
   export type ExamMaxAggregateInputType = {
     id?: true
     name?: true
+    duration?: true
+    grade?: true
     teacherId?: true
   }
 
   export type ExamCountAggregateInputType = {
     id?: true
     name?: true
+    duration?: true
+    grade?: true
     teacherId?: true
     _all?: true
   }
@@ -4979,6 +5009,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: ExamAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ExamSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: ExamMinAggregateInputType
@@ -5009,6 +5051,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: ExamCountAggregateInputType | true
+    _avg?: ExamAvgAggregateInputType
+    _sum?: ExamSumAggregateInputType
     _min?: ExamMinAggregateInputType
     _max?: ExamMaxAggregateInputType
   }
@@ -5016,8 +5060,12 @@ export namespace Prisma {
   export type ExamGroupByOutputType = {
     id: string
     name: string
+    duration: string
+    grade: number
     teacherId: string
     _count: ExamCountAggregateOutputType | null
+    _avg: ExamAvgAggregateOutputType | null
+    _sum: ExamSumAggregateOutputType | null
     _min: ExamMinAggregateOutputType | null
     _max: ExamMaxAggregateOutputType | null
   }
@@ -5039,6 +5087,8 @@ export namespace Prisma {
   export type ExamSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    duration?: boolean
+    grade?: boolean
     teacherId?: boolean
     questions?: boolean | Exam$questionsArgs<ExtArgs>
     teacher?: boolean | TeacherDefaultArgs<ExtArgs>
@@ -5049,6 +5099,8 @@ export namespace Prisma {
   export type ExamSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    duration?: boolean
+    grade?: boolean
     teacherId?: boolean
     teacher?: boolean | TeacherDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["exam"]>
@@ -5056,6 +5108,8 @@ export namespace Prisma {
   export type ExamSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    duration?: boolean
+    grade?: boolean
     teacherId?: boolean
     teacher?: boolean | TeacherDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["exam"]>
@@ -5063,10 +5117,12 @@ export namespace Prisma {
   export type ExamSelectScalar = {
     id?: boolean
     name?: boolean
+    duration?: boolean
+    grade?: boolean
     teacherId?: boolean
   }
 
-  export type ExamOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "teacherId", ExtArgs["result"]["exam"]>
+  export type ExamOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "duration" | "grade" | "teacherId", ExtArgs["result"]["exam"]>
   export type ExamInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     questions?: boolean | Exam$questionsArgs<ExtArgs>
     teacher?: boolean | TeacherDefaultArgs<ExtArgs>
@@ -5090,6 +5146,8 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
+      duration: string
+      grade: number
       teacherId: string
     }, ExtArgs["result"]["exam"]>
     composites: {}
@@ -5519,6 +5577,8 @@ export namespace Prisma {
   interface ExamFieldRefs {
     readonly id: FieldRef<"Exam", 'String'>
     readonly name: FieldRef<"Exam", 'String'>
+    readonly duration: FieldRef<"Exam", 'String'>
+    readonly grade: FieldRef<"Exam", 'Int'>
     readonly teacherId: FieldRef<"Exam", 'String'>
   }
     
@@ -9240,6 +9300,8 @@ export namespace Prisma {
   export const ExamScalarFieldEnum: {
     id: 'id',
     name: 'name',
+    duration: 'duration',
+    grade: 'grade',
     teacherId: 'teacherId'
   };
 
@@ -9638,6 +9700,8 @@ export namespace Prisma {
     NOT?: ExamWhereInput | ExamWhereInput[]
     id?: StringFilter<"Exam"> | string
     name?: StringFilter<"Exam"> | string
+    duration?: StringFilter<"Exam"> | string
+    grade?: IntFilter<"Exam"> | number
     teacherId?: StringFilter<"Exam"> | string
     questions?: QuestionListRelationFilter
     teacher?: XOR<TeacherScalarRelationFilter, TeacherWhereInput>
@@ -9647,6 +9711,8 @@ export namespace Prisma {
   export type ExamOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
+    duration?: SortOrder
+    grade?: SortOrder
     teacherId?: SortOrder
     questions?: QuestionOrderByRelationAggregateInput
     teacher?: TeacherOrderByWithRelationInput
@@ -9659,6 +9725,8 @@ export namespace Prisma {
     OR?: ExamWhereInput[]
     NOT?: ExamWhereInput | ExamWhereInput[]
     name?: StringFilter<"Exam"> | string
+    duration?: StringFilter<"Exam"> | string
+    grade?: IntFilter<"Exam"> | number
     teacherId?: StringFilter<"Exam"> | string
     questions?: QuestionListRelationFilter
     teacher?: XOR<TeacherScalarRelationFilter, TeacherWhereInput>
@@ -9668,10 +9736,14 @@ export namespace Prisma {
   export type ExamOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
+    duration?: SortOrder
+    grade?: SortOrder
     teacherId?: SortOrder
     _count?: ExamCountOrderByAggregateInput
+    _avg?: ExamAvgOrderByAggregateInput
     _max?: ExamMaxOrderByAggregateInput
     _min?: ExamMinOrderByAggregateInput
+    _sum?: ExamSumOrderByAggregateInput
   }
 
   export type ExamScalarWhereWithAggregatesInput = {
@@ -9680,6 +9752,8 @@ export namespace Prisma {
     NOT?: ExamScalarWhereWithAggregatesInput | ExamScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Exam"> | string
     name?: StringWithAggregatesFilter<"Exam"> | string
+    duration?: StringWithAggregatesFilter<"Exam"> | string
+    grade?: IntWithAggregatesFilter<"Exam"> | number
     teacherId?: StringWithAggregatesFilter<"Exam"> | string
   }
 
@@ -10034,6 +10108,8 @@ export namespace Prisma {
   export type ExamCreateInput = {
     id?: string
     name: string
+    duration: string
+    grade: number
     questions?: QuestionCreateNestedManyWithoutExamInput
     teacher: TeacherCreateNestedOneWithoutExamInput
     StudentExam?: StudentExamCreateNestedManyWithoutExamInput
@@ -10042,6 +10118,8 @@ export namespace Prisma {
   export type ExamUncheckedCreateInput = {
     id?: string
     name: string
+    duration: string
+    grade: number
     teacherId: string
     questions?: QuestionUncheckedCreateNestedManyWithoutExamInput
     StudentExam?: StudentExamUncheckedCreateNestedManyWithoutExamInput
@@ -10050,6 +10128,8 @@ export namespace Prisma {
   export type ExamUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    duration?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
     questions?: QuestionUpdateManyWithoutExamNestedInput
     teacher?: TeacherUpdateOneRequiredWithoutExamNestedInput
     StudentExam?: StudentExamUpdateManyWithoutExamNestedInput
@@ -10058,6 +10138,8 @@ export namespace Prisma {
   export type ExamUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    duration?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
     teacherId?: StringFieldUpdateOperationsInput | string
     questions?: QuestionUncheckedUpdateManyWithoutExamNestedInput
     StudentExam?: StudentExamUncheckedUpdateManyWithoutExamNestedInput
@@ -10066,17 +10148,23 @@ export namespace Prisma {
   export type ExamCreateManyInput = {
     id?: string
     name: string
+    duration: string
+    grade: number
     teacherId: string
   }
 
   export type ExamUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    duration?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
   }
 
   export type ExamUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    duration?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
     teacherId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -10581,19 +10669,33 @@ export namespace Prisma {
   export type ExamCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    duration?: SortOrder
+    grade?: SortOrder
     teacherId?: SortOrder
+  }
+
+  export type ExamAvgOrderByAggregateInput = {
+    grade?: SortOrder
   }
 
   export type ExamMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    duration?: SortOrder
+    grade?: SortOrder
     teacherId?: SortOrder
   }
 
   export type ExamMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    duration?: SortOrder
+    grade?: SortOrder
     teacherId?: SortOrder
+  }
+
+  export type ExamSumOrderByAggregateInput = {
+    grade?: SortOrder
   }
 
   export type StudentScalarRelationFilter = {
@@ -11578,6 +11680,8 @@ export namespace Prisma {
   export type ExamCreateWithoutTeacherInput = {
     id?: string
     name: string
+    duration: string
+    grade: number
     questions?: QuestionCreateNestedManyWithoutExamInput
     StudentExam?: StudentExamCreateNestedManyWithoutExamInput
   }
@@ -11585,6 +11689,8 @@ export namespace Prisma {
   export type ExamUncheckedCreateWithoutTeacherInput = {
     id?: string
     name: string
+    duration: string
+    grade: number
     questions?: QuestionUncheckedCreateNestedManyWithoutExamInput
     StudentExam?: StudentExamUncheckedCreateNestedManyWithoutExamInput
   }
@@ -11656,6 +11762,8 @@ export namespace Prisma {
     NOT?: ExamScalarWhereInput | ExamScalarWhereInput[]
     id?: StringFilter<"Exam"> | string
     name?: StringFilter<"Exam"> | string
+    duration?: StringFilter<"Exam"> | string
+    grade?: IntFilter<"Exam"> | number
     teacherId?: StringFilter<"Exam"> | string
   }
 
@@ -11814,6 +11922,8 @@ export namespace Prisma {
   export type ExamCreateWithoutStudentExamInput = {
     id?: string
     name: string
+    duration: string
+    grade: number
     questions?: QuestionCreateNestedManyWithoutExamInput
     teacher: TeacherCreateNestedOneWithoutExamInput
   }
@@ -11821,6 +11931,8 @@ export namespace Prisma {
   export type ExamUncheckedCreateWithoutStudentExamInput = {
     id?: string
     name: string
+    duration: string
+    grade: number
     teacherId: string
     questions?: QuestionUncheckedCreateNestedManyWithoutExamInput
   }
@@ -11865,6 +11977,8 @@ export namespace Prisma {
   export type ExamUpdateWithoutStudentExamInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    duration?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
     questions?: QuestionUpdateManyWithoutExamNestedInput
     teacher?: TeacherUpdateOneRequiredWithoutExamNestedInput
   }
@@ -11872,6 +11986,8 @@ export namespace Prisma {
   export type ExamUncheckedUpdateWithoutStudentExamInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    duration?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
     teacherId?: StringFieldUpdateOperationsInput | string
     questions?: QuestionUncheckedUpdateManyWithoutExamNestedInput
   }
@@ -11879,6 +11995,8 @@ export namespace Prisma {
   export type ExamCreateWithoutQuestionsInput = {
     id?: string
     name: string
+    duration: string
+    grade: number
     teacher: TeacherCreateNestedOneWithoutExamInput
     StudentExam?: StudentExamCreateNestedManyWithoutExamInput
   }
@@ -11886,6 +12004,8 @@ export namespace Prisma {
   export type ExamUncheckedCreateWithoutQuestionsInput = {
     id?: string
     name: string
+    duration: string
+    grade: number
     teacherId: string
     StudentExam?: StudentExamUncheckedCreateNestedManyWithoutExamInput
   }
@@ -11933,6 +12053,8 @@ export namespace Prisma {
   export type ExamUpdateWithoutQuestionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    duration?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
     teacher?: TeacherUpdateOneRequiredWithoutExamNestedInput
     StudentExam?: StudentExamUpdateManyWithoutExamNestedInput
   }
@@ -11940,6 +12062,8 @@ export namespace Prisma {
   export type ExamUncheckedUpdateWithoutQuestionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    duration?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
     teacherId?: StringFieldUpdateOperationsInput | string
     StudentExam?: StudentExamUncheckedUpdateManyWithoutExamNestedInput
   }
@@ -12038,11 +12162,15 @@ export namespace Prisma {
   export type ExamCreateManyTeacherInput = {
     id?: string
     name: string
+    duration: string
+    grade: number
   }
 
   export type ExamUpdateWithoutTeacherInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    duration?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
     questions?: QuestionUpdateManyWithoutExamNestedInput
     StudentExam?: StudentExamUpdateManyWithoutExamNestedInput
   }
@@ -12050,6 +12178,8 @@ export namespace Prisma {
   export type ExamUncheckedUpdateWithoutTeacherInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    duration?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
     questions?: QuestionUncheckedUpdateManyWithoutExamNestedInput
     StudentExam?: StudentExamUncheckedUpdateManyWithoutExamNestedInput
   }
@@ -12057,6 +12187,8 @@ export namespace Prisma {
   export type ExamUncheckedUpdateManyWithoutTeacherInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    duration?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
   }
 
   export type QuestionCreateManyExamInput = {

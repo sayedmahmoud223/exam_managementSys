@@ -14,4 +14,10 @@ initApp(app, express);
 // لا تستخدم app.listen() هنا
 
 // صدّر التطبيق بشكل افتراضي
+
+// app.listen(5000,()=>{
+//     console.log("server connected");
+    
+// })
+
 export default app;

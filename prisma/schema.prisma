@@ -69,6 +69,8 @@ model Teacher {
 model Exam {
   id          String        @id @default(uuid())
   name        String
+  duration    String
+  grade       Int
   questions   Question[]
   teacher     Teacher       @relation(fields: [teacherId], references: [id], onDelete: Cascade)
   teacherId   String

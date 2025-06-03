@@ -7,9 +7,9 @@ import cors from "cors"
 
 export const initApp = function (app, express) {
     app.use(cors({
-        origin: ['http://localhost:4200',"*"],
+        origin: ['http://localhost:4200', "*"],
         credentials: true,
-    }));      
+    }));
     app.use(express.json())
     app.use("/api/v1/auth", authRouter)
     app.use("/api/v1/exam", examRouter)

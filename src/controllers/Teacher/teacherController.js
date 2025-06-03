@@ -14,7 +14,7 @@ export const getAllTeacher = async (req, res, next) => {
 // get all exams belongs to one teacher
 export const getTeacherExams = async (req, res, next) => {
     const { id } = req.params
-    if (!await prisma.teacher.findUnique({ where: { id } })) {
+    if (!await prisma.teacher.findUnique({ where: { userId: id } })) {
         return next(new ResError("teacher not exist", 400))
     }
     const getAllTeacherExams = await prisma.teacher.findUnique({ where: { id }, include: { Exam: { include: { questions: { include: { options: true } } } } } })

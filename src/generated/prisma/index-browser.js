@@ -148,6 +148,8 @@ exports.Prisma.TeacherScalarFieldEnum = {
 exports.Prisma.ExamScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  duration: 'duration',
+  grade: 'grade',
   teacherId: 'teacherId'
 };
 
