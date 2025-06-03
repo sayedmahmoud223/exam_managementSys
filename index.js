@@ -15,9 +15,9 @@ initApp(app, express);
 
 // صدّر التطبيق بشكل افتراضي
 
-// app.listen(5000,()=>{
-//     console.log("server connected");
-    
-// })
+app.listen(process.env.PORT, () => {
+    console.log("server connected");
+
+})
 
 export default app;

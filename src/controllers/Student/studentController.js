@@ -10,10 +10,16 @@ export const studentSubmitExam = async (req, res, next) => {
     const { examId, answers } = req.body;
     const { id } = req.user;
     console.log({ examId, id, answers });
+    // student is exist
+    const student = await prisma.student.findUnique({ where: { userId: id } })
+    if (!student) return next(new ResError("student not exist", 400));
+    // exam is exist
     const exam = await prisma.exam.findUnique({ where: { id: examId }, include: { questions: { include: { options: true } } } })
     if (!exam) return next(new ResError("exam not exist", 400));
-    const studentSubmitExam = await prisma.studentExam.findUnique({ where: { studentId_examId: { examId, studentId: id } } })
+    // student submit exam before
+    const studentSubmitExam = await prisma.studentExam.findUnique({ where: { studentId_examId: { examId, studentId: student.id } } })
     if (studentSubmitExam) return next(new ResError("you can submit this exam for one time", 400));
+    // to attach questionId with it`s correct ans
     let correctAnswers = {}
     for (const questions of exam.questions) {
         const correctOption = questions.options.find((opt) => opt.isCorrect)
@@ -21,8 +27,10 @@ export const studentSubmitExam = async (req, res, next) => {
             correctAnswers[questions.id] = correctOption.id
         }
     }
+    // to calc the degree of each question
     let questionGrade = exam.grade / exam.questions.length
     let score = 0;
+    // check correct ans
     const resultDetails = []
     for (const answer of answers) {
         const answerIsCorrect = correctAnswers[answer.questionId] === answer.optionId
@@ -33,9 +41,16 @@ export const studentSubmitExam = async (req, res, next) => {
             answerIsCorrect
         })
     }
+    const addStudentToExam = await prisma.studentExam.create({
+        data: {
+            examId: exam.id,
+            studentId: student.id,
+            score
+        }
+    })
     res.json({
         message: "Evaluation completed",
-        score,
+        data: addStudentToExam,
         totalQuestions: exam.questions.length,
         details: resultDetails
     });

@@ -166,3 +166,53 @@ export const deleteSpecificExam = async (req, res, next) => {
     const exam = await prisma.exam.delete({ where: { id } })
     return res.status(201).json({ message: "success", data: exam })
 };
+
+
+export const getAllStudentsSubmitedTheExam = async (req, res, next) => {
+    const { id } = req.params;
+
+    const examIsExist = await prisma.exam.findUnique({ where: { id } });
+    if (!examIsExist) return next(new ResError("Exam not found", 400));
+    const stats = await prisma.$queryRaw`
+    select 
+      count(*) filter (where score > ${examIsExist.grade / 2}) as passed,
+      count(*) filter (where score < ${examIsExist.grade / 2}) as failed,
+      count(*) filter (where score = ${examIsExist.grade / 2}) as accepted
+    from "studentExam"
+    where "examId" = ${id}
+  `;
+
+    const formattedStats = Object.fromEntries(
+        Object.entries(stats[0]).map(([key, value]) => [key, Number(value)])
+    );
+
+    const examSubmissions = await prisma.studentExam.findMany({
+        where: { examId: id },
+        include: {
+            student: {
+                include: {
+                    user: {
+                        select: { name: true, email: true }
+                    }
+                }
+            }
+        }
+    });
+
+    let detailedStudents = examSubmissions.map((submission) => {
+        let percentage = (submission.score / examIsExist.grade) * 100
+        let status = "accepted"
+        if (submission.score > (examIsExist.grade / 2)) status = "passed"
+        else if (submission.score < (examIsExist.grade / 2)) status = "failed"
+
+        return {
+            ...submission,
+            status,
+            percentage: Number(percentage).toFixed(1)
+        }
+    })
+
+    return res.status(200).json({ message: "success", data: { stats: formattedStats, student: detailedStudents } });
+};
+
+

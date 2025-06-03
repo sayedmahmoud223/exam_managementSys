@@ -51,14 +51,6 @@ export const getTeacherExams = async (req, res, next) => {
     });
 };
 
-// export const getAllStudentsSubmitInTeacherExam = async (req, res, next) => {
-//     const { id } = req.params
-//     const getAllTeacherExams = await prisma.teacher.findUnique({ where: { id }, include: { Exam: { include: { questions: { include: { options: true } } } } } })
-//     console.log(getAllTeacherExams);
-//     return res.status(201).json({ message: "success", data: getAllTeacherExams })
-// };
-
-
 
 
 
