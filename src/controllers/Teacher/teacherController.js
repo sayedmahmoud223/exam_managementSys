@@ -18,6 +18,7 @@ export const getTeacherExams = async (req, res, next) => {
         return next(new ResError("teacher not exist", 400))
     }
     const getAllTeacherExams = await prisma.teacher.findUnique({ where: { id }, include: { Exam: { include: { questions: { include: { options: true } } } } } })
+    if (!getAllTeacherExams.Exam) return next(new ResError("teacher exams not exist", 400))
     console.log(getAllTeacherExams);
     return res.status(201).json({ message: "success", data: getAllTeacherExams })
 };
