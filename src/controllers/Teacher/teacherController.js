@@ -13,14 +13,42 @@ export const getAllTeacher = async (req, res, next) => {
 
 // get all exams belongs to one teacher
 export const getTeacherExams = async (req, res, next) => {
-    const { id } = req.params
-    if (!await prisma.teacher.findUnique({ where: { userId: id } })) {
-        return next(new ResError("teacher not exist", 400))
+    const { id } = req.params;
+
+    const teacher = await prisma.teacher.findFirst({
+        where: {
+            OR: [
+                { id },
+                { userId: id }
+            ]
+        }
+    });
+
+    if (!teacher) {
+        return next(new ResError("teacher not exist", 400));
     }
-    const getAllTeacherExams = await prisma.teacher.findUnique({ where: { id }, include: { Exam: { include: { questions: { include: { options: true } } } } } })
-    if (!getAllTeacherExams.Exam) return next(new ResError("teacher exams not exist", 400))
-    console.log(getAllTeacherExams);
-    return res.status(201).json({ message: "success", data: getAllTeacherExams })
+
+    const getAllTeacherExams = await prisma.teacher.findUnique({
+        where: { id: teacher.id },
+        include: {
+            Exam: {
+                include: {
+                    questions: {
+                        include: { options: true }
+                    }
+                }
+            }
+        }
+    });
+
+    if (!getAllTeacherExams?.Exam || getAllTeacherExams.Exam.length === 0) {
+        return next(new ResError("teacher exams not exist", 400));
+    }
+
+    return res.status(200).json({
+        message: "success",
+        data: getAllTeacherExams
+    });
 };
 
 // export const getAllStudentsSubmitInTeacherExam = async (req, res, next) => {
