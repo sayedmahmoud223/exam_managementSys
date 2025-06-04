@@ -11,6 +11,8 @@ export const createExam = async (req, res, next) => {
     }
     const exam = await prisma.exam.create({
         data: {
+            duration,
+            grade,
             name,
             teacherId: teacher.id,
             questions: {
