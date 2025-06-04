@@ -52,17 +52,21 @@ export const getSpecificExam = async (req, res, next) => {
 
 export const editExam = async (req, res, next) => {
     const { id } = req.params;
-    const { name, questions } = req.body;
-
+    const { name, questions, grade, duration } = req.body;
+    if (!req.body || Object.keys(req.body).length === 0) return next(new ResError("not data existed To update", 400));
     // Check if exam exists
     const exam = await prisma.exam.findUnique({ where: { id } });
     if (!exam) return next(new ResError("Exam not found", 400));
 
+    const dataToUpdate = {};
+    if (name) dataToUpdate.name = name;
+    if (grade ) dataToUpdate.grade = grade;
+    if (duration) dataToUpdate.duration = duration;
     // Update exam name
-    if (name) {
+    if (Object.keys(dataToUpdate).length > 0) {
         await prisma.exam.update({
             where: { id },
-            data: { name }
+            data:  dataToUpdate 
         });
     }
 
