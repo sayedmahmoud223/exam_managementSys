@@ -4,7 +4,7 @@ import { prisma } from "../../../index.js";
 export const createExam = async (req, res, next) => {
     const { id } = req.user
     console.log(id);
-    const { name, questions } = req.body;
+    const { name, grade, duration, questions } = req.body;
     const teacher = await prisma.teacher.findUnique({ where: { userId: id } })
     if (!teacher || teacher.status != "Confirmed") {
         return next(new ResError("teacher not found", 400))
