@@ -7,7 +7,7 @@ import { sendDataToQueue } from "../../utilis/rabbitMq.js";
 
 //get all teachers
 export const getAllTeacher = async (req, res, next) => {
-    const getAllTeachers = await prisma.teacher.findMany({ include: { user: true } })
+    const getAllTeachers = await prisma.teacher.findMany({ include: { user: true,Exam:true }})
     return res.status(201).json({ message: "success", data: getAllTeachers })
 };
 
@@ -40,6 +40,8 @@ export const getTeacherExams = async (req, res, next) => {
             }
         }
     });
+
+    // console.log();
 
     if (!getAllTeacherExams?.Exam || getAllTeacherExams.Exam.length === 0) {
         return next(new ResError("teacher exams not exist", 400));
